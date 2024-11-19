@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_h5/base/js2flutter_by_url.dart';
+
+import 'base/flutter2js_by_runJavascript.dart';
+import 'base/flutter2js_by_url.dart';
+import 'base/js2flutter_by_channel.dart';
+import 'jump/flutter_h5_jump_asset.dart';
+import 'jump/flutter_h5_jump_html_file.dart';
+import 'login/flutter_h5_login_sync_by_cookie.dart';
+import 'login/flutter_h5_sync_by_channel.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,21 +22,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -38,15 +32,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -90,28 +75,19 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            _navButton(context, JS2FlutterByUrl(), "JS2FlutterByUrl"),
+            _navButton(context, JS2FlutterByChannel(), "JS2FlutterByChannel"),
+            _navButton(context, Flutter2JSByUrl(), "Flutter2JSByUrl"),
+            _navButton(context, Flutter2JsByRunJavascript(),
+                "Flutter2JsByRunJavascript"),
+            _navButton(context, FlutterH5JumpAsset(), "FlutterH5JumpAsset"),
+            _navButton(
+                context, FlutterH5JumpHtmlFile(), "FlutterH5JumpHtmlFile"),
+            _navButton(context, FlutterH5LoginCookie(), "FlutterH5LoginCookie"),
+            _navButton(
+                context, FlutterH5LoginChannel(), "FlutterH5LoginChannel")
           ],
         ),
       ),
@@ -121,5 +97,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  _navButton(BuildContext context, Widget page, String title) {
+    return FilledButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) => page));
+        },
+        child: Text(title));
   }
 }
